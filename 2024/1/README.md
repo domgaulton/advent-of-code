@@ -1,7 +1,3 @@
-# Day 1 - Advent of Code 2024
-
-## URL
-
 https://adventofcode.com/2024/day/1
 
 ## --- Day 1: Historian Hysteria ---
