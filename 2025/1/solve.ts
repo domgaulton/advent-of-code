@@ -1,4 +1,4 @@
-// advent_of_code_2024_day1.ts
+// https://adventofcode.com/2024/day/1
 
 import * as fs from 'fs';
 import * as path from 'path';
