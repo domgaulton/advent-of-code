@@ -2,74 +2,37 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-// https://adventofcode.com/2024/day/2
+// Read input (one sequence per line, space-separated numbers)
+// const input = fs.readFileSync('input.txt', 'utf-8').trim().split('\n');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const filePath = path.resolve(__dirname, 'INPUT.md');
+const input = fs.readFileSync(filePath, 'utf-8').trim().split('\n');
+const lines = input.map(line => line.split(/\s+/).map(Number));
 
-function individualLines(filename: string): string[] {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const filePath = path.resolve(__dirname, filename);
-  return fs.readFileSync(filePath, 'utf-8').split('\n');
+// Helper: Check if array is strictly increasing or decreasing, and all diffs in [1,3]
+function isSafe(seq: number[]): boolean {
+  if (seq.length < 2) return true;
+  const diffs = seq.slice(1).map((n, i) => n - seq[i]);
+  const allIncreasing = diffs.every(d => d >= 1 && d <= 3);
+  const allDecreasing = diffs.every(d => d <= -1 && d >= -3);
+  return allIncreasing || allDecreasing;
 }
 
-function ensureDiffIsSafe (numA: number, numB: number): boolean {
-  const safeDiff = Math.abs(numA - numB)
+// Part 1: Count safe lines
+const part1 = lines.filter(isSafe).length;
 
-  return safeDiff >= 1 && safeDiff <= 3;
-}
-
-function checkForSafeLine(lines: string[]): number {
-  let safeLines = 0;
-
-  for (const line of lines) {
-    const lineAsNumberArray = line.split(' ').map(string => parseInt(string));
-    
-    if (Number.isNaN(lineAsNumberArray[0])) {
-      break;
-    }
-
-    // - The levels are either _all increasing_ or _all decreasing_.
-    // - Any two adjacent levels differ by _at least one_ and _at most three_.
-
-    let firstNumbersAreAscending: boolean | undefined = undefined;
-    for (const [index, lineItem] of lineAsNumberArray.entries()) {
-      
-      // Check first diff
-      // Check and set if numbers are ascending
-      if (index === 1) {
-        const firstItem = lineAsNumberArray[0];
-        const secondItem = lineAsNumberArray[1];
-
-        if ( !ensureDiffIsSafe(firstItem, secondItem) ) break;
-
-        firstNumbersAreAscending = firstItem < secondItem 
-      }
-
-
-      if ( index > 1) {
-        const numA = lineAsNumberArray[index - 1]
-        const numB = lineItem
-        const currentNumbersAscending = numA < numB
-
-        // Check numbers are still ascending (or descending)
-        if (firstNumbersAreAscending !== currentNumbersAscending) break;
-
-        // Check number are a safe distance
-        if (!ensureDiffIsSafe(numA, numB) ) break;
-
-        // If last number and still all fine, add to safe lines
-        if (lineAsNumberArray.length - 1 === index) {
-          safeLines += 1;
-        }
-      }
-    }
-
-
+// Part 2: Count lines that are safe, or can be made safe by removing one number
+function isSafeWithOneRemoval(seq: number[]): boolean {
+  if (isSafe(seq)) return true;
+  for (let i = 0; i < seq.length; i++) {
+    const newSeq = seq.slice(0, i).concat(seq.slice(i + 1));
+    if (isSafe(newSeq)) return true;
   }
-  return safeLines
-
+  return false;
 }
+const part2 = lines.filter(isSafeWithOneRemoval).length;
 
-// Main
-const lines = individualLines('INPUT.md');
 console.log('Solution for 02/2024...');
-console.log('Safe Lines:', checkForSafeLine(lines));
+console.log('Safe lines - Part 1:', part1); // 463
+console.log('Safe lines - Part 2:', part2); // 514

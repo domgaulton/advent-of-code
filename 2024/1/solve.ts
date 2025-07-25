@@ -30,4 +30,4 @@ function totalDistance(left: number[], right: number[]): number {
 // Main
 const [left, right] = getAndSplitLines('INPUT.md');
 console.log('Solution for 01/2024...');
-console.log('Total distance:', totalDistance(left, right));
+console.log('Total distance:', totalDistance(left, right)); // 2164381
