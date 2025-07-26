@@ -7,5 +7,5 @@ const __dirname = path.dirname(__filename);
 const filePath = path.resolve(__dirname, 'INPUT.md');
 const input = fs.readFileSync(filePath, 'utf-8').trim();
 
-console.log('Solution for 06/2024...');
+console.log('Solution for 09/2024...');
 console.log(input)
