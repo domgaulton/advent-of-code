@@ -11,6 +11,7 @@ The Elf has for you both the page ordering rules and the pages to produce in eac
 
 For example:
 
+```
 47|53
 97|13
 97|61
@@ -33,12 +34,14 @@ For example:
 75|13
 53|13
 
-75,47,61,53,29
-97,61,53,29,13
-75,29,13
-75,97,47,61,53
-61,13,29
-97,13,75,29,47
+75,47,61,53,29 // Correct
+97,61,53,29,13 // Correct
+75,29,13 // Correct
+75,97,47,61,53 // Incorrect
+61,13,29 // Incorrect
+97,13,75,29,47 // Incorrect
+```
+
 The first section specifies the page ordering rules, one per line. The first rule, 47|53, means that if an update includes both page number 47 and page number 53, then page number 47 must be printed at some point before page number 53. (47 doesn't necessarily need to be immediately before 53; other pages are allowed to be between them.)
 
 The second section specifies the page numbers of each update. Because most safety manuals are different, the pages needed in the updates are different too. The first update, 75,47,61,53,29, means that the update consists of page numbers 75, 47, 61, 53, and 29.
@@ -67,6 +70,7 @@ For some reason, the Elves also need to know the middle page number of each upda
 75,47,61,53,29
 97,61,53,29,13
 75,29,13
+
 These have middle page numbers of 61, 53, and 29 respectively. Adding these page numbers together gives 143.
 
 Of course, you'll need to be careful: the actual list of page ordering rules is bigger and more complicated than the above example.
